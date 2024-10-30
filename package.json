@@ -16,6 +16,7 @@
     "vite-plugin-solid": "^2.8.2"
   },
   "dependencies": {
-    "solid-js": "^1.8.11"
+    "bluefish-solid": "^0.0.35",
+    "solid-js": "^1.9.3"
   }
 }
