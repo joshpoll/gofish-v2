@@ -18,10 +18,25 @@ const polar: Space = {
   ],
 };
 
-const coordinateLine = (space: Space, dim: number, value: number) => {
+const wavy: Space = {
+  transform: ([x, y]: [number, number]) => ({
+    // Add sine waves to both x and y coordinates
+    x: x + 5 * Math.sin(y / 10), // Wave in x direction based on y
+    y: y + 5 * Math.sin(x / 10), // Wave in y direction based on x
+  }),
+  bounds: [
+    [-50, 50], // x bounds
+    [-50, 50], // y bounds
+  ],
+};
+
+const coordinateLine = (space: Space, dim: number, loc: number) => {
   // sample the space at dim=value and generate a path
   const points = [];
   const SAMPLES = 100;
+  // Calculate the lerped value for the fixed dimension
+  const value = (space.bounds[dim][1] - space.bounds[dim][0]) * loc + space.bounds[dim][0];
+
   for (let i = 0; i < SAMPLES; i++) {
     const t = i / (SAMPLES - 1);
     const domainPoint: [number, number] = [0, 0];
@@ -37,7 +52,7 @@ const coordinateLine = (space: Space, dim: number, value: number) => {
   return points;
 };
 
-const SVG_PADDING = 10;
+const SVG_PADDING = 150;
 
 const App: Component = () => {
   return (
@@ -49,27 +64,29 @@ const App: Component = () => {
           }) scale(${scaleFactor})`}
         >
           {/* some grid lines */}
-          <For each={[0, 10, 20, 30, 40, 50]}>
+          <For each={[0, 0.2, 0.4, 0.6, 0.8, 1]}>
             {(loc) => (
               <path
-                d={coordinateLine(polar, 0, loc)
+                d={coordinateLine(wavy, 0, loc)
                   .map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`))
                   .join(" ")}
                 stroke="black"
                 stroke-width={0.5}
                 fill="none"
+                stroke-linecap="round"
               />
             )}
           </For>
           <For each={[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]}>
             {(loc) => (
               <path
-                d={coordinateLine(polar, 1, 2 * Math.PI * loc)
+                d={coordinateLine(wavy, 1, loc)
                   .map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`))
                   .join(" ")}
                 stroke="black"
                 stroke-width={0.5}
                 fill="none"
+                stroke-linecap="round"
               />
             )}
           </For>
