@@ -69,7 +69,9 @@ const coordinateLine = (space: Space, dim: number, loc: number) => {
 };
 
 const SVG_PADDING = 500;
-const GRID_COLOR = "#334155";
+const POINT_COLOR = "#0369A1";
+const GRID_COLOR = "#CBD5E1";
+const GRID_STROKE_WIDTH = 0.25;
 
 const App: Component = () => {
   const points = Array.from({ length: 100 }).map(() => randomPoint(linear));
@@ -90,7 +92,7 @@ const App: Component = () => {
                   .map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`))
                   .join(" ")}
                 stroke={GRID_COLOR}
-                stroke-width={0.5}
+                stroke-width={GRID_STROKE_WIDTH}
                 fill="none"
                 stroke-linecap="round"
               />
@@ -103,14 +105,14 @@ const App: Component = () => {
                   .map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`))
                   .join(" ")}
                 stroke={GRID_COLOR}
-                stroke-width={0.5}
+                stroke-width={GRID_STROKE_WIDTH}
                 fill="none"
                 stroke-linecap="round"
               />
             )}
           </For>
           <For each={points}>
-            {(p) => <circle cx={p.x} cy={p.y} r={1} fill="#8cd9d9" stroke="white" stroke-width={0.25} />}
+            {(p) => <circle cx={p.x} cy={p.y} r={1} fill={POINT_COLOR} stroke="white" stroke-width={0.25} />}
           </For>
         </g>
         <g
@@ -126,7 +128,7 @@ const App: Component = () => {
                   .map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`))
                   .join(" ")}
                 stroke={GRID_COLOR}
-                stroke-width={0.5}
+                stroke-width={GRID_STROKE_WIDTH}
                 fill="none"
                 stroke-linecap="round"
               />
@@ -139,14 +141,14 @@ const App: Component = () => {
                   .map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`))
                   .join(" ")}
                 stroke={GRID_COLOR}
-                stroke-width={0.5}
+                stroke-width={GRID_STROKE_WIDTH}
                 fill="none"
                 stroke-linecap="round"
               />
             )}
           </For>
           <For each={points.map((p) => wavy.transform([p.x, p.y]))}>
-            {(p) => <circle cx={p.x} cy={p.y} r={1} fill="#8cd9d9" stroke="white" stroke-width={0.25} />}
+            {(p) => <circle cx={p.x} cy={p.y} r={1} fill={POINT_COLOR} stroke="white" stroke-width={0.25} />}
           </For>
         </g>
         {/* <For each={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}>
