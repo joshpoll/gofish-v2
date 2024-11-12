@@ -2,6 +2,7 @@ import { createEffect, createSignal, For, type Component } from "solid-js";
 
 import logo from "./logo.svg";
 import styles from "./App.module.css";
+import balloon from "./assets/balloon.png";
 
 const scaleFactor = 10;
 
@@ -224,6 +225,44 @@ const GRID_STROKE_WIDTH = 0.25;
 
 const DISCRETE_COLOR_PALETTE = ["#0369A1", "#0284C7", "#0EA5E9", "#34D399", "#A3E635", "#FBBF24"];
 
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
+};
+
+// Calculate sepia, brightness and hue-rotate values
+const calculateFilters = (hex) => {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return "";
+
+  // Convert RGB to HSL to get brightness
+  const max = Math.max(rgb.r, rgb.g, rgb.b) / 255;
+  const min = Math.min(rgb.r, rgb.g, rgb.b) / 255;
+  const brightness = (max + min) / 2;
+
+  // Calculate hue rotation
+  let hue = 0;
+  if (max !== min) {
+    const d = max - min;
+    if (max === rgb.r / 255) {
+      hue = (rgb.g / 255 - rgb.b / 255) / d + (rgb.g / 255 < rgb.b / 255 ? 6 : 0);
+    } else if (max === rgb.g / 255) {
+      hue = (rgb.b / 255 - rgb.r / 255) / d + 2;
+    } else {
+      hue = (rgb.r / 255 - rgb.g / 255) / d + 4;
+    }
+    hue *= 60;
+  }
+
+  return `sepia(1) brightness(${brightness + 0.5}) hue-rotate(${hue}deg)`;
+};
+
 const App: Component = () => {
   const points = Array.from({ length: 100 }).map(() => randomPoint(linear));
   const polarPoints = Array.from({ length: 1000 }).map(() => randomPolarPoint());
@@ -281,6 +320,18 @@ const App: Component = () => {
     )
   );
 
+  const width = 8;
+  const padding = 2;
+
+  const barChartData = [
+    { x: 0, y: 0, width: 10, height: 10 + 10, color: "#0369A1" },
+    { x: 10, y: 0, width: 20, height: 20 + 10, color: "#0284C7" },
+    { x: 30, y: 0, width: 30, height: 30 + 10, color: "#0EA5E9" },
+    { x: 60, y: 0, width: 40, height: 40 + 10, color: "#34D399" },
+    { x: 100, y: 0, width: 50, height: 50 + 10, color: "#A3E635" },
+    { x: 150, y: 0, width: 60, height: 60 + 10, color: "#FBBF24" },
+  ];
+
   const [time, setTime] = createSignal(0);
 
   setInterval(() => {
@@ -290,6 +341,42 @@ const App: Component = () => {
   return (
     <div>
       <svg width={100 * scaleFactor + SVG_PADDING} height={100 * scaleFactor + SVG_PADDING}>
+        {/* bar chart */}
+        <For each={barChartData}>
+          {(data, i) => (
+            // <rect
+            //   x={20 + i() * (width + padding)}
+            //   y={100 - data.height}
+            //   width={width}
+            //   height={data.height}
+            //   fill={data.color}
+            // />
+            <>
+              <image
+                x={20 + i() * (width + padding)}
+                y={100 - data.height}
+                href={balloon}
+                width={width}
+                style={{
+                  filter: `drop-shadow(0px ${data.height}px 4px ${data.color}) ${calculateFilters(data.color)}`,
+                }}
+              />
+              <path
+                d={`M ${20 + i() * (width + padding) + width / 2} ${100 - data.height + width * 1.4}
+                   C ${20 + i() * (width + padding) + width / 2 - data.height / 10} ${
+                  100 - data.height + width * 1.4 + data.height / 3
+                }
+                     ${20 + i() * (width + padding) + width / 2 + data.height / 10} ${
+                  100 - data.height + width * 1.4 + (data.height * 2) / 3
+                }
+                     ${20 + i() * (width + padding) + width / 2} ${100}`}
+                stroke={data.color}
+                stroke-width="0.25"
+                fill="none"
+              />
+            </>
+          )}
+        </For>
         {/* linear and timeVaryingWavy */}
         {/* <g
           transform={`translate(${SVG_PADDING / 2 + (100 * scaleFactor) / 2 / 2}, ${
@@ -433,7 +520,7 @@ const App: Component = () => {
           </For>
         </g> */}
         {/* polar */}
-        <g
+        {/* <g
           transform={`translate(${SVG_PADDING / 2 + (100 * scaleFactor) / 2 / 2}, ${
             SVG_PADDING / 2 + (100 * scaleFactor) / 2 / 2
           }) scale(${scaleFactor / 2})`}
@@ -455,15 +542,15 @@ const App: Component = () => {
               </For>
             )}
           </For>
-          {/* <For each={polarPoints}>
+          <For each={polarPoints}>
             {(p) => <circle cx={p.x} cy={p.y} r={1} fill={POINT_COLOR} stroke="white" stroke-width={0.25} />}
-          </For> */}
-          {/* <path
+          </For>
+          <path
             d={transformLine(polarRect, polar)
               .map((p, i) => (i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`))
               .join(" ")}
             fill={POINT_COLOR}
-          /> */}
+          />
           <For each={polarSet}>
             {(area, i) => (
               <path
@@ -475,7 +562,7 @@ const App: Component = () => {
               />
             )}
           </For>
-        </g>
+        </g> */}
       </svg>
     </div>
   );
