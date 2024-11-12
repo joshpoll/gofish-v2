@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For } from "solid-js";
+import { createEffect, createSignal, For, onCleanup } from "solid-js";
 import { coordinateLine } from "./library/spaces/coordinateLine";
 import { linear } from "./library/spaces/linear";
 import { randomPoint } from "./library/spaces/randomPoint";
@@ -25,9 +25,10 @@ export const Wavy = (props: WavyProps) => {
         setTime(time() + 0.01);
       }, 1000 / 60);
     }
-    return () => {
+
+    onCleanup(() => {
       if (interval) clearInterval(interval);
-    };
+    });
   });
 
   const rect = subdivideLine(

@@ -18,7 +18,7 @@ export const subdivideLine = <Domain extends number[]>(line: Line<Domain>, n: nu
   for (let i = 0; i < line.points.length - 1; i++) {
     const start = line.points[i];
     const end = line.points[i + 1];
-    console.log("start, end", start, end);
+    // console.log("start, end", start, end);
     // subdivide n times
     for (let j = 0; j <= n; j++) {
       points.push(Array(start.length).fill(0) as Domain);
@@ -31,7 +31,7 @@ export const subdivideLine = <Domain extends number[]>(line: Line<Domain>, n: nu
   if (line.closed) {
     const last = line.points[line.points.length - 1];
     const first = line.points[0];
-    console.log("last, first", last, first);
+    // console.log("last, first", last, first);
     // subdivide the last point
     for (let i = 0; i <= n; i++) {
       points.push(Array(last.length).fill(0) as Domain);

@@ -43,7 +43,6 @@ const App: Component = () => {
           GRID_COLOR={GRID_COLOR}
           GRID_STROKE_WIDTH={GRID_STROKE_WIDTH}
           POINT_COLOR={POINT_COLOR}
-          // TODO: this does not work!!!
           animate={animate()}
         />
         {/* barycentric */}
