@@ -4,6 +4,7 @@ import { linear } from "./library/spaces/linear";
 import { randomPoint } from "./library/spaces/randomPoint";
 import { subdivideLine, transformLine } from "./library/geometry/line";
 import { timeVaryingWavy } from "./library/spaces/wavy";
+import { createTime } from "./library/animation/time";
 
 export type WavyProps = {
   SVG_PADDING: number;
@@ -16,19 +17,10 @@ export type WavyProps = {
 
 export const Wavy = (props: WavyProps) => {
   const points = Array.from({ length: 100 }).map(() => randomPoint(linear));
-  const [time, setTime] = createSignal(0);
+  const { time, setActive } = createTime();
 
   createEffect(() => {
-    let interval: number | undefined;
-    if (props.animate ?? true) {
-      interval = setInterval(() => {
-        setTime(time() + 0.01);
-      }, 1000 / 60);
-    }
-
-    onCleanup(() => {
-      if (interval) clearInterval(interval);
-    });
+    setActive(props.animate ?? true);
   });
 
   const rect = subdivideLine(

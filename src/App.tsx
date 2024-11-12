@@ -16,6 +16,7 @@ import { Barycentric } from "./examples/barycentric";
 import { polar } from "./examples/library/spaces/polar";
 import { Polar } from "./examples/polar";
 import { PieChart } from "./examples/pieChart";
+import { Button } from "./examples/library/inputs/button";
 
 const scaleFactor = 10;
 
@@ -31,7 +32,7 @@ const App: Component = () => {
 
   return (
     <div>
-      <button onClick={() => setAnimate(!animate())}>{animate() ? "Stop" : "Start"}</button>
+      <Button bind={[animate, setAnimate]}>{animate() ? "Stop" : "Start"}</Button>
       <br />
       <svg width={100 * scaleFactor + SVG_PADDING} height={100 * scaleFactor + SVG_PADDING}>
         {/* bar chart */}
