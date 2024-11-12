@@ -1,8 +1,8 @@
 import { createEffect, createSignal, onCleanup } from "solid-js";
 
-export const createTime = () => {
+export const createTime = (startActive = true) => {
   const [time, setTime] = createSignal(0);
-  const [active, setActive] = createSignal(true);
+  const [active, setActive] = createSignal(startActive);
 
   createEffect(() => {
     let interval: number | undefined;
