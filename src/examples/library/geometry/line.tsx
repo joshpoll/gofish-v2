@@ -1,6 +1,9 @@
 import { Space } from "../spaces/spaceType";
 import { lerp } from "../util";
 
+// TODO: we are currently doing things the "hard" way, but there is an "easy" way!
+// See this tweet from Keenan: https://x.com/keenanisalive/status/1856461853544567205
+
 // polyline, optionally closed
 export type Line<Domain extends number[] = [number, number]> = {
   // COMBAK: this representation might be better than Domain[]...

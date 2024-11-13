@@ -5,6 +5,7 @@ import { randomPoint } from "./library/spaces/randomPoint";
 import { subdivideLine, transformLine } from "./library/geometry/line";
 import { timeVaryingWavy } from "./library/spaces/wavy";
 import { createTime } from "./library/animation/time";
+import { lerp } from "./library/util";
 
 export type WavyProps = {
   SVG_PADDING: number;
@@ -35,6 +36,10 @@ export const Wavy = (props: WavyProps) => {
     },
     100
   );
+
+  const wavySpace = () => timeVaryingWavy(time());
+  const axisTicks = [0, 0.2, 0.4, 0.6, 0.8, 1];
+  const axisValues = () => axisTicks.map((x) => lerp(wavySpace().bounds[0][0], wavySpace().bounds[0][1], x));
 
   return (
     <>
@@ -140,6 +145,28 @@ export const Wavy = (props: WavyProps) => {
               />
             </g>
           )}
+        </For>
+        <For each={axisValues()}>
+          {(x) => {
+            const p = () => wavySpace().transform([x, wavySpace().bounds[1][1]]);
+
+            return (
+              <text x={p().x} y={p().y + 10} text-anchor="middle" font-size="4" fill={"black"}>
+                {x.toFixed(1)}
+              </text>
+            );
+          }}
+        </For>
+        <For each={axisValues()}>
+          {(y) => {
+            const p = () => wavySpace().transform([wavySpace().bounds[0][0], y]);
+
+            return (
+              <text x={p().x - 10} y={p().y} text-anchor="middle" font-size="4" fill={"black"}>
+                {y.toFixed(1)}
+              </text>
+            );
+          }}
         </For>
         <For each={points.map((p) => timeVaryingWavy(time()).transform([p.x, p.y]))}>
           {(p) => <circle cx={p.x} cy={p.y} r={1} fill={props.POINT_COLOR} stroke="white" stroke-width={0.25} />}
