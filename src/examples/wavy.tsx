@@ -6,6 +6,7 @@ import { subdivideLine, transformLine } from "./library/geometry/line";
 import { timeVaryingWavy } from "./library/spaces/wavy";
 import { createTime } from "./library/animation/time";
 import { lerp } from "./library/util";
+import { Axis } from "./library/spaces/guides/axis";
 
 export type WavyProps = {
   SVG_PADDING: number;
@@ -131,6 +132,7 @@ export const Wavy = (props: WavyProps) => {
             />
           )}
         </For>
+        {/* x-axis */}
         <For each={[1]}>
           {(loc) => (
             <g transform={`translate(0,5)`}>
@@ -146,7 +148,15 @@ export const Wavy = (props: WavyProps) => {
             </g>
           )}
         </For>
-        <For each={axisValues()}>
+        <Axis
+          ticks
+          space={timeVaryingWavy(time())}
+          dim={0}
+          loc={1}
+          color={props.GRID_COLOR}
+          stroke-width={props.GRID_STROKE_WIDTH * 2}
+        />
+        {/* <For each={axisValues()}>
           {(x) => {
             const p = () => wavySpace().transform([x, wavySpace().bounds[1][1]]);
 
@@ -156,8 +166,16 @@ export const Wavy = (props: WavyProps) => {
               </text>
             );
           }}
-        </For>
-        <For each={axisValues()}>
+        </For> */}
+        <Axis
+          ticks
+          space={timeVaryingWavy(time())}
+          dim={1}
+          loc={0}
+          color={props.GRID_COLOR}
+          stroke-width={props.GRID_STROKE_WIDTH * 2}
+        />
+        {/* <For each={axisValues()}>
           {(y) => {
             const p = () => wavySpace().transform([wavySpace().bounds[0][0], y]);
 
@@ -167,7 +185,7 @@ export const Wavy = (props: WavyProps) => {
               </text>
             );
           }}
-        </For>
+        </For> */}
         <For each={points.map((p) => timeVaryingWavy(time()).transform([p.x, p.y]))}>
           {(p) => <circle cx={p.x} cy={p.y} r={1} fill={props.POINT_COLOR} stroke="white" stroke-width={0.25} />}
         </For>
