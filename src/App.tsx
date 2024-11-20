@@ -17,6 +17,9 @@ import { polar } from "./examples/library/spaces/polar";
 import { Polar } from "./examples/polar";
 import { PieChart } from "./examples/pieChart";
 import { Button } from "./examples/library/inputs/button";
+import { SplotchyFlickering } from "./examples/library/filters/splotchyFlickering";
+import { Moss } from "./examples/library/filters/moss";
+import { Canvas } from "./examples/library/filters/canvas";
 
 const scaleFactor = 10;
 
@@ -32,6 +35,115 @@ const App: Component = () => {
 
   return (
     <div>
+      <svg width={100 * scaleFactor + SVG_PADDING} height={100 * scaleFactor + SVG_PADDING}>
+        <defs>
+          {/* <filter id="screentone-fine-pulsing">
+            <feImage
+              id="SvgjsFeImage1785"
+              cellheight="4"
+              cellwidth="4"
+              dx="10"
+              dy="10"
+              filtername="feImage"
+              href="#1bGD2van"
+              patterntype="grid"
+              result="BcGV3I"
+              rotation="0"
+              sx="20"
+              sy="20"
+              type="turbulence"
+              unitrot="0"
+              unittype="circle"
+              animation='{"cellwidth":"{\"attributeName\":\"cellwidth\",\"dur\":\"2.2\",\"values\":\"3;1;3\"}","cellheight":"{\"attributeName\":\"cellheight\",\"dur\":\"2.2\",\"values\":\"3;1;3\"}"}'
+            >
+              <animate
+                attributeName="cellwidth"
+                dur="2.2"
+                values="3;1;3"
+                attributeType="XML"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="cellheight"
+                dur="2.2"
+                values="3;1;3"
+                attributeType="XML"
+                repeatCount="indefinite"
+              />
+            </feImage>
+            <feImage
+              id="SvgjsFeImage1788"
+              cellheight="4"
+              cellwidth="4"
+              dx="10"
+              dy="10"
+              filtername="feImage"
+              href="#mEb90HXk"
+              patterntype="grid"
+              result="pe2jcK"
+              rotation="0"
+              sx="5"
+              sy="5"
+              type="turbulence"
+              unitrot="0"
+              unittype="circle"
+              animation='{"cellwidth":"{\"attributeName\":\"cellwidth\",\"dur\":\"2.2\",\"values\":\"1;3;1\"}","cellheight":"{\"attributeName\":\"cellheight\",\"dur\":\"2.2\",\"values\":\"1;3;1\"}"}'
+            >
+              <animate
+                attributeName="cellwidth"
+                dur="2.2"
+                values="1;3;1"
+                attributeType="XML"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="cellheight"
+                dur="2.2"
+                values="1;3;1"
+                attributeType="XML"
+                repeatCount="indefinite"
+              />
+            </feImage>
+            <feComposite
+              id="SvgjsFeComposite1791"
+              filtername="feComposite"
+              in="pe2jcK"
+              in2="BcGV3I"
+              operator="over"
+              result="1iiEfs"
+            />
+            <feComposite
+              id="SvgjsFeComposite1792"
+              filtername="feComposite"
+              in="SourceGraphic"
+              in2="1iiEfs"
+              operator="in"
+              result="yezH8r"
+            />
+          </filter> */}
+          <SplotchyFlickering />
+          <Moss />
+          <Canvas />
+        </defs>
+        <g transform={`translate(10, ${100 * scaleFactor - 10})`}>
+          <For each={[0.3, 0.5, 0.8, 0.4, 0.6, 0.2, 0.7]}>
+            {(height, i) => (
+              <rect
+                x={i() * 30}
+                y={-height * 50 * scaleFactor}
+                width={25}
+                height={height * 50 * scaleFactor}
+                fill="red"
+                // filter="url(#splotchy-flickering)"
+                // filter="url(#moss)"
+                filter="url(#canvas)"
+                // clip-path={`url(#rect-clip-${i()})`}
+              />
+            )}
+          </For>
+        </g>
+      </svg>
+      <br />
       <Button bind={[animate, setAnimate]}>{animate() ? "Stop" : "Start"}</Button>
       <br />
       <svg width={100 * scaleFactor + SVG_PADDING} height={100 * scaleFactor + SVG_PADDING}>
