@@ -20,6 +20,8 @@ import { Button } from "./examples/library/inputs/button";
 import { SplotchyFlickering } from "./examples/library/filters/splotchyFlickering";
 import { Moss } from "./examples/library/filters/moss";
 import { Canvas } from "./examples/library/filters/canvas";
+import { SquigglyAnimated } from "./examples/library/filters/squigglyAnimated";
+import { Pencil } from "./examples/library/filters/pencil";
 
 const scaleFactor = 10;
 
@@ -124,6 +126,8 @@ const App: Component = () => {
           <SplotchyFlickering />
           <Moss />
           <Canvas />
+          <SquigglyAnimated />
+          <Pencil />
         </defs>
         <g transform={`translate(10, ${100 * scaleFactor - 10})`}>
           <For each={[0.3, 0.5, 0.8, 0.4, 0.6, 0.2, 0.7]}>
@@ -134,9 +138,12 @@ const App: Component = () => {
                 width={25}
                 height={height * 50 * scaleFactor}
                 fill="red"
+                // stroke="red"
                 // filter="url(#splotchy-flickering)"
                 // filter="url(#moss)"
-                filter="url(#canvas)"
+                // filter="url(#canvas)"
+                // filter="url(#squiggly-animated)"
+                filter="url(#pencil)"
                 // clip-path={`url(#rect-clip-${i()})`}
               />
             )}
