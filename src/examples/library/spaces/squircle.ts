@@ -32,7 +32,7 @@ export const squircle: ({ roundness, aspectRatio }: { roundness: number; aspectR
     const lerpRadius = radius * roundness + squareRadius * (1 - roundness);
 
     const lerpX = lerpRadius * Math.cos(angle);
-    const lerpY = lerpRadius * Math.sin(angle);
+    const lerpY = lerpRadius * Math.sin(angle) * aspectRatio;
 
     // // Calculate square coordinates
     // let squareX, squareY;
