@@ -22,6 +22,10 @@ import { Moss } from "./examples/library/filters/moss";
 import { Canvas } from "./examples/library/filters/canvas";
 import { SquigglyAnimated } from "./examples/library/filters/squigglyAnimated";
 import { Pencil } from "./examples/library/filters/pencil";
+import { Fisheye } from "./examples/library/filters/fisheye";
+import { PeriodicManifold } from "./examples/library/spaces/periodicTable";
+import { Squircle } from "./examples/squircle";
+import { Slider } from "./examples/library/inputs/slider";
 
 const scaleFactor = 10;
 
@@ -34,6 +38,10 @@ const GRID_STROKE_WIDTH = 0.25;
 
 const App: Component = () => {
   const [animate, setAnimate] = createSignal(true);
+  const [roundness, setRoundness] = createSignal(0.5);
+  const [aspectRatio, setAspectRatio] = createSignal(1);
+
+  const periodicManifold = new PeriodicManifold();
 
   return (
     <div>
@@ -128,6 +136,7 @@ const App: Component = () => {
           <Canvas />
           <SquigglyAnimated />
           <Pencil />
+          <Fisheye />
         </defs>
         <g transform={`translate(10, ${100 * scaleFactor - 10})`}>
           <For each={[0.3, 0.5, 0.8, 0.4, 0.6, 0.2, 0.7]}>
@@ -143,7 +152,8 @@ const App: Component = () => {
                 // filter="url(#moss)"
                 // filter="url(#canvas)"
                 // filter="url(#squiggly-animated)"
-                filter="url(#pencil)"
+                // filter="url(#pencil)"
+                // filter="url(#fisheye)"
                 // clip-path={`url(#rect-clip-${i()})`}
               />
             )}
@@ -154,17 +164,38 @@ const App: Component = () => {
       <Button bind={[animate, setAnimate]}>{animate() ? "Stop" : "Start"}</Button>
       <br />
       <svg width={100 * scaleFactor + SVG_PADDING} height={100 * scaleFactor + SVG_PADDING}>
+        <For each={Array.from({ length: 100 }).map((_, i) => i)}>
+          {(i) => (
+            <text
+              x={periodicManifold.getElementPosition(i).x * 100 + 100}
+              y={periodicManifold.getElementPosition(i).y * 100 + 100}
+            >
+              {i}
+            </text>
+          )}
+        </For>
+      </svg>
+      <br />
+      <label>Roundness</label>
+      <Slider bind={[roundness, setRoundness]} min={0} max={1} step={0.01} />
+      {roundness()}
+      <br />
+      <label>Aspect Ratio</label>
+      <Slider bind={[aspectRatio, setAspectRatio]} min={0.01} max={1} step={0.01} />
+      {aspectRatio()}
+      <br />
+      <svg width={100 * scaleFactor + SVG_PADDING} height={100 * scaleFactor + SVG_PADDING}>
         {/* bar chart */}
         <Balloons />
         {/* linear and timeVaryingWavy */}
-        <Wavy
+        {/* <Wavy
           SVG_PADDING={SVG_PADDING}
           scaleFactor={scaleFactor}
           GRID_COLOR={GRID_COLOR}
           GRID_STROKE_WIDTH={GRID_STROKE_WIDTH}
           POINT_COLOR={POINT_COLOR}
           animate={animate()}
-        />
+        /> */}
         {/* barycentric */}
         {/* <Barycentric
           SVG_PADDING={SVG_PADDING}
@@ -181,6 +212,15 @@ const App: Component = () => {
           GRID_STROKE_WIDTH={GRID_STROKE_WIDTH}
           POINT_COLOR={POINT_COLOR}
         /> */}
+        <Squircle
+          roundness={roundness()}
+          aspectRatio={aspectRatio()}
+          SVG_PADDING={SVG_PADDING}
+          scaleFactor={scaleFactor}
+          GRID_COLOR={GRID_COLOR}
+          GRID_STROKE_WIDTH={GRID_STROKE_WIDTH}
+          POINT_COLOR={POINT_COLOR}
+        />
         {/*   <PieChart
           SVG_PADDING={SVG_PADDING}
           scaleFactor={scaleFactor}

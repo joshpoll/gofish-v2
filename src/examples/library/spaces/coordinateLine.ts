@@ -7,11 +7,11 @@ export const coordinateLine = <Domain extends number[]>(
   space: Space<Domain>,
   dim: number,
   loc: number,
-  constrain: (dim: number, t: number) => number = (dim, t) => lerp(space.bounds[dim][0], space.bounds[dim][1], t)
+  constrain: (dim: number, t: number) => number = (dim, t) => lerp(space.bounds[dim][0], space.bounds[dim][1], t),
+  SAMPLES: number = 100
 ) => {
   // sample the space at dim=value and generate a path
   const points = [];
-  const SAMPLES = 100;
 
   for (let i = 0; i < SAMPLES; i++) {
     const t = i / (SAMPLES - 1);
